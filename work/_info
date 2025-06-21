@@ -1,0 +1,163 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/Amir Rosengarten/ModelSimProjects/lab3
+vcomb
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+!s110 1733835769
+!i10b 1
+!s100 0A[1]AL`nVeDCP:iTh7Jl1
+Z2 !s11b Dg1SIo80bB@j0V0VzS_@n1
+Idfi]82Bz9zRWbX[^Wa?]Y1
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+w1732563750
+8C:/Users/Amir Rosengarten/ModelSimProjects/lab3/comb.sv
+FC:/Users/Amir Rosengarten/ModelSimProjects/lab3/comb.sv
+!i122 23
+L0 1 8
+Z4 OV;L;2020.1;71
+r1
+!s85 0
+31
+!s108 1733835769.000000
+!s107 C:/Users/Amir Rosengarten/ModelSimProjects/lab3/comb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Amir Rosengarten/ModelSimProjects/lab3/comb.sv|
+!i113 1
+Z5 o-work work -sv
+Z6 tCvgOpt 0
+vGCD
+R1
+Z7 !s110 1733834998
+!i10b 1
+!s100 VfUWcN;jCoDEjR_7SSmNh0
+R2
+I^nQ4L@c@d@NeCl8nb3PBC1
+R3
+S1
+R0
+w1733834297
+8C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd.sv
+FC:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd.sv
+!i122 20
+L0 1 87
+R4
+r1
+!s85 0
+31
+Z8 !s108 1733834998.000000
+!s107 C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd.sv|
+!i113 1
+R5
+R6
+n@g@c@d
+vGCD_tb
+R1
+R7
+!i10b 1
+!s100 KTEN7WzfmXP>z^9T;M6;C1
+R2
+ITCzz3AY?GQ>V5oG;YBFQU3
+R3
+S1
+R0
+w1733834988
+8C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd_tb.sv
+FC:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd_tb.sv
+!i122 21
+L0 3 95
+R4
+r1
+!s85 0
+31
+R8
+!s107 C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Amir Rosengarten/ModelSimProjects/lab3/gcd_tb.sv|
+!i113 1
+R5
+R6
+n@g@c@d_tb
+vpower_on
+R1
+R7
+!i10b 1
+!s100 =zWa[FCoMWK65g1c=LTFK0
+R2
+I@1H[FLzof7XN8Y18?Uenn2
+R3
+S1
+R0
+w1733829268
+8C:/Users/Amir Rosengarten/ModelSimProjects/lab3/power_on.sv
+FC:/Users/Amir Rosengarten/ModelSimProjects/lab3/power_on.sv
+!i122 18
+L0 3 24
+R4
+r1
+!s85 0
+31
+!s108 1733834997.000000
+!s107 C:/Users/Amir Rosengarten/ModelSimProjects/lab3/power_on.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Amir Rosengarten/ModelSimProjects/lab3/power_on.sv|
+!i113 1
+R5
+R6
+vpower_on_tb
+R1
+R7
+!i10b 1
+!s100 6FnehWNQQ]gUh>K4U83Ra0
+R2
+In2Kb4INciCoCnK3gZ0`813
+R3
+S1
+R0
+w1733832824
+8C:\Users\Amir Rosengarten\ModelSimProjects\lab3\power_on_tb.sv
+FC:\Users\Amir Rosengarten\ModelSimProjects\lab3\power_on_tb.sv
+!i122 19
+L0 3 142
+R4
+r1
+!s85 0
+31
+R8
+!s107 C:\Users\Amir Rosengarten\ModelSimProjects\lab3\power_on_tb.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:\Users\Amir Rosengarten\ModelSimProjects\lab3\power_on_tb.sv|
+!i113 1
+R5
+R6
+vshifter
+R1
+!s110 1733835756
+!i10b 1
+!s100 hiQIlVgS[z[R6zcGhHX@]2
+R2
+I5Ha2i]KQB`a;6El6^7dAX3
+R3
+S1
+R0
+w1732013199
+8C:/Users/Amir Rosengarten/ModelSimProjects/lab3/shifter.sv
+FC:/Users/Amir Rosengarten/ModelSimProjects/lab3/shifter.sv
+!i122 22
+L0 1 19
+R4
+r1
+!s85 0
+31
+!s108 1733835756.000000
+!s107 C:/Users/Amir Rosengarten/ModelSimProjects/lab3/shifter.sv|
+!s90 -reportprogress|300|-work|work|-sv|-stats=none|C:/Users/Amir Rosengarten/ModelSimProjects/lab3/shifter.sv|
+!i113 1
+R5
+R6

@@ -1,0 +1,97 @@
+`timescale 1ns / 1ns
+
+module GCD_tb();
+
+    // Testbench signals for the DUT
+    logic clk, resetb, ld;
+    logic [7:0] U, V;
+    logic [7:0] res;
+    logic done;
+
+    // DUT Instantiation
+    GCD gcd_dut (
+        .clk(clk),
+        .resetb(resetb),
+        .ld(ld),
+        .U(U),
+        .V(V),
+        .res(res),
+        .done(done)
+    );
+
+    // Randomize Inputs
+    function void randomize_inputs();
+        U = $random() % 256 + 1; 
+        V = $random() % 256 + 1; 
+    endfunction
+
+    // Generate a 10ns clock period (100MHz)
+    always begin
+        clk = 1'b1;
+        forever #5 clk = ~clk;
+    end
+
+    // Driver
+    // Sync Task to Wait for Clock Edge
+    task sync();
+        @(posedge clk);
+        #1; // Allow time for signals to stabilize
+    endtask
+
+    // Reset Task
+    task automatic reset();
+        resetb = 1'b0; 
+        #10;
+        resetb = 1'b1; 
+    endtask
+
+    // Drive Inputs
+    task automatic drive_inputs();
+        randomize_inputs(); 
+        ld <= 1;          
+        sync();          
+        ld <= 0;          
+    endtask
+
+    // Checker
+    // Golden Model for GCD computation
+    function logic [7:0] gcd_model(input logic [7:0] a, input logic [7:0] b);
+        while (b != 0) begin
+            logic [7:0] remainder;
+            remainder = a % b; 
+            a = b;             
+            b = remainder;     
+        end
+        return a;
+    endfunction
+
+    // Task to check the DUT's result against the golden model
+    task automatic check_gcd(input logic [7:0] U, input logic [7:0] V, input logic [7:0] res);
+        logic [7:0] expected_res;
+
+        expected_res = gcd_model(U, V); 
+        if (res !== expected_res) begin
+            $error("Mismatch: GCD(%0d, %0d) = %0d (expected: %0d)", U, V, res, expected_res);
+        end else begin
+            $display("PASS: GCD(%0d, %0d) = %0d", U, V, res);
+        end
+    endtask
+
+
+    // Monitor
+    initial begin
+    reset(); // Apply reset
+
+    repeat (100) begin
+        drive_inputs();       
+        @(posedge done);      // Wait for computation to complete
+        #1;                   // Small delay for signal stabilization
+        $display("GCD(%0d, %0d) = %0d", U, V, res);
+        check_gcd(U, V, res); // Run the checker
+	#9ns;
+    end
+
+    $stop; // End simulation
+end
+
+endmodule

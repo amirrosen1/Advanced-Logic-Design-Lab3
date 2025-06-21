@@ -1,0 +1,88 @@
+module GCD (
+    input logic [7:0] U,
+    input logic [7:0] V,
+    output logic [7:0] res,
+    input logic ld,
+    input logic resetb,
+    input logic clk,
+    output logic done
+);
+
+// Flip Flop arguments:
+logic [7:0] cur_U;
+logic [7:0] cur_V;
+logic [7:0] counter;
+
+// Variables:
+logic [7:0] new_U;
+logic [7:0] new_V;
+logic [7:0] U_divide_by_2;
+logic [7:0] V_divide_by_2;
+logic [7:0] U_minus_V;
+logic [7:0] V_minus_U;
+
+// Flags:
+logic [1:0] lsb_flag;
+logic en;
+
+// Assign functions
+assign U_divide_by_2 = cur_U >> 1;
+assign V_divide_by_2 = cur_V >> 1;
+assign U_minus_V = cur_U - cur_V;
+assign V_minus_U = cur_V - cur_U;
+assign lsb_flag = {cur_U[0], cur_V[0]};
+assign en = (lsb_flag == 2'b00);
+
+// Final result
+assign done = (cur_U == cur_V);
+assign res = cur_U << counter;
+
+// Set new_U
+always_comb
+    case (lsb_flag)
+        2'b00: new_U = U_divide_by_2;
+        2'b01: new_U = U_divide_by_2;
+        2'b10: new_U = cur_U;
+        2'b11: new_U = (cur_V < cur_U) ? U_minus_V : cur_U;
+        default: new_U = cur_U;
+    endcase
+
+// Set new_V
+always_comb
+    case (lsb_flag)
+        2'b00: new_V = V_divide_by_2;
+        2'b01: new_V = cur_V;
+        2'b10: new_V = V_divide_by_2;
+        2'b11: new_V = (cur_V < cur_U) ? cur_V : V_minus_U;
+        default: new_V = cur_V;
+    endcase
+
+// Current U
+always_ff @(posedge clk or negedge resetb)
+    if (~resetb)
+        cur_U <= U;
+    else if (ld)
+	cur_U <= U;
+    else
+        cur_U <= new_U;
+
+// Current V
+always_ff @(posedge clk or negedge resetb)
+    if (~resetb)
+        cur_V <= V;
+    else if (ld)
+	cur_V <= V;
+    else
+        cur_V <= new_V;
+
+// Counter
+always_ff @(posedge clk or negedge resetb)
+    if (~resetb)
+        counter <= 0;
+    else if (ld)
+        counter <= 0;
+    else if (en)
+        counter <= counter + 8'd1;
+
+endmodule
+

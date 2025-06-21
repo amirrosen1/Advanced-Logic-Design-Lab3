@@ -1,0 +1,145 @@
+`timescale 1ns/1ns
+
+module power_on_tb();
+
+    // Testbench signals
+    logic resetb;
+    logic clk;
+    logic power_good;
+    logic enable;
+
+    // Timing variables
+    time power_good_up;
+    time power_good_down;    
+    time enable_up;
+    time enable_down;
+
+    // DUT instantiation
+    power_on DUT (
+        .resetb(resetb),
+        .clk(clk),
+        .power_good(power_good),
+        .enable(enable)
+    );
+
+    // Clock generation with a 10 ns period (100 MHz)
+    always begin
+        #5 clk = ~clk; // Toggle clock every 5 ns
+    end
+
+    // Stimulus generation and test sequence
+    initial begin
+        // Initialize signals
+        resetb = 0;
+        clk = 1;
+        power_good <= 0;
+	$display("\n     Test 1 start: power_good = 0 for 300ns, expected enable = 0 \n");
+    	resetb <= 1;
+   	power_good <= 0;
+    	#300ns;
+	$display("\n     Test 1 end: passed if enable didn't turn on \n");
+    	// 
+	$display("\n     Test 2: power_good = 1 for 350ns, expected enable = 1 for 60ns \n");
+    	power_good <= 1;
+    	#350ns;
+    	power_good <= 0;
+	#10ns;
+	$display("\n     Test 2 end: passed if enable turned for 60ns \n");
+	$display("\n     Test 3: 100ns break, expected enable = 0 \n");
+	#10ns;
+    	power_good <= 1;
+    	#100ns;
+    	power_good <= 0;
+    	#100ns;
+    	power_good <= 1;
+    	#150ns;
+    	power_good <= 0;
+    	#10ns;
+	$display("\n     Test 3 end: passed if enable didnt turn on \n");
+	$display("\n     Test 4: 1 for 290ns, expected enable = 0 \n");
+    	power_good <= 1;
+    	#290ns;
+    	power_good <= 0;
+    	#10ns;
+	$display("\n     Test 4 end: passed if enable turned for 60ns \n");
+	$display("\n     Test 5: resetb after 100ns, expected enable = 0 \n");
+    	power_good <= 1;
+    	#100ns;
+    	resetb <= 0;
+    	#10ns;
+    	resetb <= 1;
+   	#200ns;
+	$display("\n     Test 5 end: passed if enable turned for 60ns \n");
+	$display("\n All test cases executed.");
+        $stop; // End simulation
+    end
+
+    // Checker logic using fork-join
+    initial forever begin
+        @(posedge power_good); // Trigger checker on power_good rising edge
+
+        fork : CHECK_BLOCK
+            	// check that enable didnt turn on before 30 cycles
+		begin
+                	@(posedge enable);
+                	if (($time - power_good_up) < 300 || ($time - power_good_up) > 310) begin
+    		    		$error("   FAIL: Enable timing mismatch. Expected ~300 ns, got %0t ns.", $time - power_good_up);
+			end else begin
+    		    		$display("   PASS: Enable was set within the expected timing window (~300 ns) at time %0t.", $time);
+			end
+
+            	end 
+		// check that enable turned on after 30 cycles          
+		begin
+                	#300ns; // Wait for 300 ns
+			#1ns;
+                	if (enable == 0 && power_good == 1) begin
+                    		$error("   FAIL: Enable was not set after 300 ns.");
+                	end else begin
+                    		$display("   PASS: Enable was correctly set after 300 ns at time %0t.", $time);
+                	end
+            	end
+            	// chcek that
+            	begin
+                	@(negedge power_good);
+			$display("  left fork - power_good was set to 0 time was %0t.", $time);
+
+            	end
+		begin
+                	@(negedge resetb);
+			$display("  left fork - resetb was set to 0 time was %0t.", $time);
+
+            	end
+        	join_any
+
+        disable CHECK_BLOCK; // Terminate any remaining checks
+    end
+
+    // Monitor for delay measurements
+    always @(posedge power_good) begin
+        power_good_up = $time; // Record the time of power_good rising edge
+	$display("DEBUG: power_good asserted at %0t.", power_good_up);
+    end
+
+    always @(posedge enable) begin
+        enable_up = $time; // Record the time of enable rising edge
+        $display("   INFO: Rise time delay  is %t ns. Expected ~300 ns.", enable_up - power_good_up);
+    end
+
+    always @(negedge power_good) begin
+        power_good_down = $time; // Record the time of power_good rising edge
+	$display("DEBUG: power_good reset at %0t.", power_good_down);
+    end
+
+    always @(negedge enable) begin
+        enable_down = $time; // Record the time of enable rising edge
+        $display("   INFO: Fall time delay is %t ns. Expected ~10 ns.", enable_down - power_good_down);
+    end
+
+    // Debugging monitor
+    always @(posedge clk) begin
+        $display("DEBUG: Time: %0t, power_good: %0b, enable: %0b", $time, power_good, enable);
+    end
+
+
+endmodule

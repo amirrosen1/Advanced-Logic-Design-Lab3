@@ -1,0 +1,12 @@
+logic [3:0] a;       
+logic [1:0] b;     
+logic [6:0] y;      
+
+always_comb
+    case (b[1:0])
+        2'h0: y = {3'b000, a};          
+        2'h1: y = {2'b00, a, 1'b0};    
+        2'h2: y = {1'b0, a, 2'b00};     
+        2'h3: y = {a, 3'b000};          
+        default: y = 7'b0000000;     
+    endcase

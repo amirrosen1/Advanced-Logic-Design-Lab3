@@ -1,0 +1,8 @@
+*.zip
+*.vmdk
+*.pdf
+*.docx
+*.json
+.idea/
+*.log
+.vscode/
